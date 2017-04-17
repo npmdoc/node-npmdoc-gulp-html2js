@@ -1,0 +1,394 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/fraserxu/gulp-html2js#readme"
+
+    >gulp-html2js (v0.4.2)</a>
+</h1>
+<h4>Gulp plugin for converting AngularJS templates to JavaScript</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-html2js">module gulp-html2js</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.gulp-html2js">
+            function <span class="apidocSignatureSpan"></span>gulp-html2js
+            <span class="apidocSignatureSpan">(file, opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.compile">
+            function <span class="apidocSignatureSpan">gulp-html2js.</span>compile
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.toString">
+            function <span class="apidocSignatureSpan">gulp-html2js.</span>toString
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">gulp-html2js.</span>compile.prototype</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-html2js.compile">module gulp-html2js.compile</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.compile.compile">
+            function <span class="apidocSignatureSpan">gulp-html2js.</span>compile
+            <span class="apidocSignatureSpan">(opt)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.gulp-html2js.compile.prototype">module gulp-html2js.compile.prototype</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.compile.prototype.add">
+            function <span class="apidocSignatureSpan">gulp-html2js.compile.prototype.</span>add
+            <span class="apidocSignatureSpan">(filePath, content)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.gulp-html2js.compile.prototype.getAdapter">
+            function <span class="apidocSignatureSpan">gulp-html2js.compile.prototype.</span>getAdapter
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-html2js" id="apidoc.module.gulp-html2js">module gulp-html2js</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.gulp-html2js" id="apidoc.element.gulp-html2js.gulp-html2js">
+        function <span class="apidocSignatureSpan"></span>gulp-html2js
+        <span class="apidocSignatureSpan">(file, opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">gulp-html2js = function (file, opt) {
+    if (!file) {
+        throw new PluginError(PLUGIN_NAME, &#x27;Missing file option for gulp-html-to-js&#x27;);
+    }
+    var opt = opt || {};
+    opt.base = opt.base || &#x27;.&#x27;
+    opt.quoteChar = opt.quoteChar || &#x27;&#x22;&#x27;
+    opt.indentString = opt.indentString || &#x27;  &#x27;
+    opt.target = opt.target || &#x27;&#x27;
+    opt.htmlmin = opt.htmlmin || {}
+    opt.useStrict = opt.useStrict || false
+    opt.outputModuleName = opt.outputModuleName || false;
+    opt.separator = gutil.linefeed;
+
+    var _module,
+        latestFile,
+        latestMod;
+
+    return through.obj(function (file, enc, cb) {
+        // ignore empty files
+        if (file.isNull()) {
+            cb();
+            return;
+        }
+        if (!latestMod || file.stat &#x26;&#x26; file.stat.mtime &#x3e; latestMod) {
+            latestFile = file;
+            latestMod = file.stat &#x26;&#x26; file.stat.mtime;
+        }
+
+        // we don&#x27;t do streams (yet)
+        if (file.isStream()) {
+            this.emit(&#x27;error&#x27;, new PluginError(PLUGIN_NAME, &#x27;Streaming not supported&#x27;));
+            cb();
+            return;
+        }
+        // construct concat instance
+        if (!_module) {
+            _module = new htmlToJs(opt);
+        }
+        // add file to concat instance
+        _module.add(file.path, file.contents.toString());
+        cb();
+    }, function (cb) {
+        // no files passed in, no file goes out
+        if (!latestFile || !_module) {
+            cb();
+            return;
+        }
+
+
+        var joinedFile;
+
+        // if file opt was a file path
+        // clone everything from the latest file
+        if (typeof file === &#x27;string&#x27;) {
+            joinedFile = latestFile.clone({contents: false});
+            joinedFile.path = path.join(latestFile.base, file);
+        } else {
+            joinedFile = new File(file);
+        }
+
+        joinedFile.contents = _module.content;
+        this.push(joinedFile);
+        cb();
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.compile" id="apidoc.element.gulp-html2js.compile">
+        function <span class="apidocSignatureSpan">gulp-html2js.</span>compile
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function html2js(opt) {
+    this.opt = opt || {};
+    this.opt.base = this.opt.base || &#x27;./&#x27;;
+    this.adapter;
+    this.contentParts = [];
+    this.separator = new Buffer(opt.separator || &#x27;,&#x27;);
+    this.getAdapter();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.toString" id="apidoc.element.gulp-html2js.toString">
+        function <span class="apidocSignatureSpan">gulp-html2js.</span>toString
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">toString = function () {
+    return text;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        return;
+    }
+    // construct concat instance
+    if (!_module) {
+        _module = new htmlToJs(opt);
+    }
+    // add file to concat instance
+    _module.add(file.path, file.contents.<span class="apidocCodeKeywordSpan">toString</span>());
+    cb();
+}, function (cb) {
+    // no files passed in, no file goes out
+    if (!latestFile || !_module) {
+        cb();
+        return;
+    }
+...</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-html2js.compile" id="apidoc.module.gulp-html2js.compile">module gulp-html2js.compile</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.compile.compile" id="apidoc.element.gulp-html2js.compile.compile">
+        function <span class="apidocSignatureSpan">gulp-html2js.</span>compile
+        <span class="apidocSignatureSpan">(opt)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function html2js(opt) {
+    this.opt = opt || {};
+    this.opt.base = this.opt.base || &#x27;./&#x27;;
+    this.adapter;
+    this.contentParts = [];
+    this.separator = new Buffer(opt.separator || &#x27;,&#x27;);
+    this.getAdapter();
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.gulp-html2js.compile.prototype" id="apidoc.module.gulp-html2js.compile.prototype">module gulp-html2js.compile.prototype</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.compile.prototype.add" id="apidoc.element.gulp-html2js.compile.prototype.add">
+        function <span class="apidocSignatureSpan">gulp-html2js.compile.prototype.</span>add
+        <span class="apidocSignatureSpan">(filePath, content)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">add = function (filePath, content) {
+    filePath = filePath &#x26;&#x26; normalizePath(filePath);
+
+    var filePath = normalizePath(path.relative(this.opt.base, filePath))
+
+    if (typeof this.opt.rename === &#x27;function&#x27;) {
+        filePath = this.opt.rename(filePath)
+    }
+
+    if (this.contentParts.length) {
+        this.contentParts.push(this.separator);
+    }
+
+    this.contentParts.push(new Buffer(this.adapter.getFile(filePath, content)));
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+        return;
+    }
+    // construct concat instance
+    if (!_module) {
+        _module = new htmlToJs(opt);
+    }
+    // add file to concat instance
+    _module.<span class="apidocCodeKeywordSpan">add</span>(file.path, file.contents.toString());
+    cb();
+}, function (cb) {
+    // no files passed in, no file goes out
+    if (!latestFile || !_module) {
+        cb();
+        return;
+    }
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.gulp-html2js.compile.prototype.getAdapter" id="apidoc.element.gulp-html2js.compile.prototype.getAdapter">
+        function <span class="apidocSignatureSpan">gulp-html2js.compile.prototype.</span>getAdapter
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">getAdapter = function () {
+
+    if (this.adapter) return this.adapter;
+
+    switch (this.opt.adapter) {
+        case &#x27;angular&#x27;:
+        default:
+            this.adapter = new NGAdapter(this.opt);
+            break;
+        case &#x27;javascript&#x27;:
+            this.adapter = new JSAdapter(this.opt);
+            break;
+    }
+    this.contentParts = [new Buffer(this.adapter.getHeader())];
+    return this.adapter;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+function html2js(opt) {
+this.opt = opt || {};
+this.opt.base = this.opt.base || &#x27;./&#x27;;
+this.adapter;
+this.contentParts = [];
+this.separator = new Buffer(opt.separator || &#x27;,&#x27;);
+this.<span class="apidocCodeKeywordSpan">getAdapter</span>();
+}
+html2js.prototype.add = function (filePath, content) {
+filePath = filePath &#x26;&#x26; normalizePath(filePath);
+
+var filePath = normalizePath(path.relative(this.opt.base, filePath))
+
+if (typeof this.opt.rename === &#x27;function&#x27;) {
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
