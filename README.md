@@ -1,4 +1,7 @@
-# api documentation for  [gulp-html2js (v0.4.2)](https://github.com/fraserxu/gulp-html2js#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-html2js.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-html2js) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-html2js.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-html2js)
+# npmdoc-gulp-html2js
+
+#### basic api documentation for  [gulp-html2js (v0.4.2)](https://github.com/fraserxu/gulp-html2js#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-gulp-html2js.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-gulp-html2js) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-gulp-html2js.svg)](https://travis-ci.org/npmdoc/node-npmdoc-gulp-html2js)
+
 #### Gulp plugin for converting AngularJS templates to JavaScript
 
 [![NPM](https://nodei.co/npm/gulp-html2js.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/gulp-html2js)
@@ -59,7 +62,8 @@
         "url": "git://github.com/fraserxu/gulp-html2js.git"
     },
     "scripts": {},
-    "version": "0.4.2"
+    "version": "0.4.2",
+    "bin": {}
 }
 ```
 
